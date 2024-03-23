@@ -1,15 +1,46 @@
 import { useRecoilState } from "recoil";
 import { FormData } from "../store/atom/ServicesFormData";
 import "../App.css";
+import axios from "axios";
+import { useCallback } from "react";
 export function FormInServices() {
   const [formData, setFormData] = useRecoilState(FormData);
-  const handleInput = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log(formData);
-  };
+  const handleInput = useCallback(
+    (e) => {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    [setFormData]
+  );
+  const submitHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        await axios.post("http://localhost:8000/services", {
+          name: formData.name,
+          address: formData.address,
+          contactNumber: formData.contactNumber,
+          Apt: formData.Apt,
+          email: formData.email,
+          problem: formData.problem,
+        });
+        alert("Email sent successfully");
+        setFormData({
+          name: "",
+          address: "",
+          contactNumber: "",
+          Apt: "",
+          email: "",
+          problem: "",
+        });
+      } catch (error) {
+        console.log("Error submitting form:", error);
+      }
+    },
+    [formData]
+  );
   return (
     <div>
       <p>

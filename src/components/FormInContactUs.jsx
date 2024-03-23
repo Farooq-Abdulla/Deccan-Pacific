@@ -1,16 +1,45 @@
 import { useRecoilState } from "recoil";
 import { ContactUsFormData } from "../store/ContactUsFormData";
 import "../App.css";
+import axios from "axios";
+import { useCallback } from "react";
 
 export function FormInContactUs() {
   const [ContactUsForm, setContactUsFrom] = useRecoilState(ContactUsFormData);
-  const handleInput = (e) => {
-    setContactUsFrom({ ...ContactUsForm, [e.target.name]: e.target.value });
-  };
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log(ContactUsForm);
-  };
+
+  const handleInput = useCallback(
+    (e) => {
+      setContactUsFrom((prevForm) => ({
+        ...prevForm,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    [setContactUsFrom]
+  );
+
+  const submitHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        await axios.post("http://localhost:8000/contactUs", {
+          name: ContactUsForm.name,
+          email: ContactUsForm.email,
+          subject: ContactUsForm.subject,
+          description: ContactUsForm.description,
+        });
+        alert("Email sent successfully");
+        setContactUsFrom({
+          name: "",
+          email: "",
+          subject: "",
+          description: "",
+        });
+      } catch (error) {
+        console.log("Error submitting form:", error);
+      }
+    },
+    [ContactUsForm]
+  );
   return (
     <div className="formPage">
       <h2>Contact Us</h2>

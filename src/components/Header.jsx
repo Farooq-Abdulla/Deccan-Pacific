@@ -16,6 +16,9 @@ export function Header() {
           <div onClick={() => navigate("/services")}>Services</div>
           <div onClick={() => navigate("/contactUs")}>Contact Us</div>
         </div>
+        <div className="admin">
+          <div onClick={() => navigate("/admin")}>Admin Login</div>
+        </div>
       </div>
     </div>
   );

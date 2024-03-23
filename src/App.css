@@ -19,6 +19,12 @@
   cursor: pointer;
   margin: 0 30px 0 30px;
 }
+.admin {
+  margin: auto 10px auto auto;
+}
+.admin div {
+  cursor: pointer;
+}
 .navbar-Right div:hover {
   font-weight: bolder;
 }
@@ -55,6 +61,7 @@
 #description,
 #Apt,
 #address,
+#password,
 #contactNumber,
 #problem {
   margin: 20px auto;
@@ -116,4 +123,15 @@
   margin-top: 20px;
 }
 
-/* Add any additional styles as needed */
+/* AdminLogin Page */
+
+.adminLoginPage {
+  margin: 100px auto;
+  padding: 25px 70px 15px 70px;
+  text-align: center;
+  border: 2px solid black;
+  width: fit-content;
+  border-radius: 20px;
+
+  box-shadow: 5px 5px 10px #888888;
+}

@@ -7,6 +7,7 @@ import { Home } from "./components/Home";
 const Services = React.lazy(() => import("./components/Services"));
 const About = React.lazy(() => import("./components/About"));
 const ContactUs = React.lazy(() => import("./components/ContactUs"));
+const Admin = React.lazy(() => import("./components/Admin"));
 function App() {
   return (
     <div>
@@ -15,6 +16,14 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route
+              path="/admin"
+              element={
+                <Suspense fallback={<div>loading...</div>}>
+                  <Admin />
+                </Suspense>
+              }
+            />
             <Route
               path="/About"
               element={

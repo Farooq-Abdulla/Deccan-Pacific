@@ -13,10 +13,10 @@ const loginSchema = new mongoose.Schema({
 });
 const Login = mongoose.model("Login", loginSchema);
 
-Login.create({
-  email: "itachi09uchiha03@gmail.com",
-  password: "1234567890",
-});
+// Login.create({
+//   email: "itachi09uchiha03@gmail.com",
+//   password: "1234567890",
+// });
 
 module.exports = {
   Login: Login,

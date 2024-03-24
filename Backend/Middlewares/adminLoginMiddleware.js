@@ -1,19 +1,21 @@
-const { Login } = require("../Db/dbInit");
+const { Login } = require("../Db/AdminloginSchemaInit");
 const { zodLogin } = require("../Db/schemaValidations");
 
 async function adminLoginMiddleware(req, res, next) {
-  const { email, password } = req.body;
-  const parsedEmail = zodLogin.safeParse(email);
-  const parsedPassword = zodLogin.safeParse(password);
-  if (!parsedEmail.success || !parsedPassword.success) {
+  const loginCredentials = req.body;
+  const parsedCredentials = zodLogin.safeParse(loginCredentials);
+
+  if (!parsedCredentials) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
+
   const user = await Login.findOne({
-    email: parsedEmail.data,
-    password: parsedPassword.data,
+    email: parsedCredentials.data.email,
+    password: parsedCredentials.data.password,
   });
+
   if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    return res.status(401).json({ message: "Invalid user credentials" });
   } else {
     next();
   }

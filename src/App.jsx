@@ -1,13 +1,15 @@
+import { RecoilRoot } from "recoil";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import React, { Suspense } from "react";
-import { RecoilRoot } from "recoil";
+
 import { Home } from "./components/Home";
 
 const Services = React.lazy(() => import("./components/Services"));
 const About = React.lazy(() => import("./components/About"));
 const ContactUs = React.lazy(() => import("./components/ContactUs"));
 const Admin = React.lazy(() => import("./components/Admin"));
+const AdminSideHome = React.lazy(() => import("./components/AdminSideHome"));
 function App() {
   return (
     <div>
@@ -21,6 +23,14 @@ function App() {
               element={
                 <Suspense fallback={<div>loading...</div>}>
                   <Admin />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/info"
+              element={
+                <Suspense fallback={<div>loading...</div>}>
+                  <AdminSideHome />
                 </Suspense>
               }
             />

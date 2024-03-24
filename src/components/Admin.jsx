@@ -2,7 +2,12 @@ import { useRecoilState } from "recoil";
 import "../App.css";
 import { AdminLoginFormData } from "../store/atom/AdminLoginFormData";
 import { useCallback } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 export default function Admin() {
+  const navigate = useNavigate();
+
   const [loginData, setLoginData] = useRecoilState(AdminLoginFormData);
   const handleInput = useCallback(
     (e) => {
@@ -16,7 +21,23 @@ export default function Admin() {
   const submitHandler = useCallback(
     async (e) => {
       e.preventDefault();
-      console.log(loginData);
+      try {
+        let res = await axios.post("http://localhost:8000/admin", {
+          email: loginData.email,
+          password: loginData.password,
+        });
+        localStorage.setItem("authToken", res.data.token);
+
+        if (res.data.msg === "Success") {
+          navigate("/admin/info");
+        }
+        setLoginData({
+          email: "",
+          password: "",
+        });
+      } catch (error) {
+        console.log("Error submitting form:", error);
+      }
     },
     [loginData]
   );

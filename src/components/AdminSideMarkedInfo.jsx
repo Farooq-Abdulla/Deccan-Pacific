@@ -2,10 +2,35 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { AdminMarkedInfoAtom } from "../store/atom/AdminMarkedInfoAtom";
 import "../App.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function AdminSideMarkedInfo() {
   const [showAllDb, setShowAllDb] = useRecoilState(AdminMarkedInfoAtom);
+  const [fetchTrigger, setFetchTrigger] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/admin/markedInfo",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
+        setShowAllDb(response.data);
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [setShowAllDb, fetchTrigger]);
+  useEffect(() => {
+    setFetchTrigger((prev) => !prev);
+  }, []);
   return (
     <div>
       <h1>Admin Side Home</h1>

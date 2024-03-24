@@ -152,6 +152,29 @@ app.post("/admin/info/erase", async (req, res) => {
   }
 });
 
+app.get("/admin/markedInfo", async (req, res) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) {
+    return res.status(401).json({ msg: "Token is Null" });
+  }
+  try {
+    const decoded = jwt.verify(token, AccessTokenSecret);
+    const { email } = decoded;
+    // console.log(email);
+    const validUser = await Login.findOne({ email: email });
+    if (!validUser) {
+      return res.status(401).json({ msg: "Unauthorized User" });
+    }
+
+    const info = await ShowAllServiceQuery.find();
+    res.status(200).json(info);
+  } catch (error) {
+    console.log("JWT verification error:", error);
+    res.status(401).json({ msg: "Unauthorized" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}!`);
 });

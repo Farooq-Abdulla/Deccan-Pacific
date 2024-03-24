@@ -10,6 +10,9 @@ const About = React.lazy(() => import("./components/About"));
 const ContactUs = React.lazy(() => import("./components/ContactUs"));
 const Admin = React.lazy(() => import("./components/Admin"));
 const AdminSideHome = React.lazy(() => import("./components/AdminSideHome"));
+const AdminSideMarkedInfo = React.lazy(() =>
+  import("./components/AdminSideMarkedInfo")
+);
 function App() {
   return (
     <div>
@@ -31,6 +34,14 @@ function App() {
               element={
                 <Suspense fallback={<div>loading...</div>}>
                   <AdminSideHome />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/markedInfo"
+              element={
+                <Suspense fallback={<div>loading...</div>}>
+                  <AdminSideMarkedInfo />
                 </Suspense>
               }
             />

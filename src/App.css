@@ -195,3 +195,7 @@ tr:hover {
 .allQueries:hover {
   background-color: #dcdcdc;
 }
+
+#PendingQueries {
+  text-align: center;
+}

@@ -73,8 +73,13 @@ export default function AdminSideHome() {
 
       <div>
         <div className="Table-top">
-          <h2>SQDb Data</h2>
-          <p className="allQueries">Show All Queries</p>
+          <h2>Pending Queries</h2>
+          <p
+            className="allQueries"
+            onClick={() => navigate("/admin/markedInfo")}
+          >
+            Show All Queries
+          </p>
           <p className="CheckedItemsButton" onClick={RemoveDoneItems}>
             Mark Checked Items As Done
           </p>

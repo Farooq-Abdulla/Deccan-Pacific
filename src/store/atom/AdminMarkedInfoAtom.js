@@ -1,0 +1,17 @@
+import axios from "axios";
+import { atom, selector } from "recoil";
+
+export const AdminMarkedInfoAtom = atom({
+  key: "AdminMarkedInfoAtom",
+  default: selector({
+    key: "AdminMarkedInfoAtomSelector",
+    get: async () => {
+      const res = await axios.get("http://localhost:8000/admin/markedInfo", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+      return res.data;
+    },
+  }),
+});

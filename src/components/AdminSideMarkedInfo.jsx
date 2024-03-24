@@ -11,7 +11,7 @@ export default function AdminSideMarkedInfo() {
       <h1>Admin Side Home</h1>
 
       <div>
-        <div className="Table-top">
+        <div className="PendingQTable">
           <h2
             id="PendingQueries"
             className="allQueries"

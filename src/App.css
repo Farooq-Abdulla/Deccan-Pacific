@@ -196,6 +196,7 @@ tr:hover {
   background-color: #dcdcdc;
 }
 
-#PendingQueries {
-  text-align: center;
+.PendingQTable {
+  display: flex;
+  justify-content: center;
 }

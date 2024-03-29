@@ -41,6 +41,10 @@ const serviceQuerySchema = new mongoose.Schema({
     type: String,
     default: new Date().toLocaleString(),
   },
+  queryRank: {
+    type: Number,
+    default: 5,
+  },
 });
 
 const MarkedServiceQuerySchema = new mongoose.Schema({

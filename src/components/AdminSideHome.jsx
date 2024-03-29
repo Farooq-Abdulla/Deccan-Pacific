@@ -18,7 +18,10 @@ export default function AdminSideHome() {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         });
-        setSQDbData(response.data);
+        const sortedData = response.data.sort(
+          (a, b) => b.queryRank - a.queryRank
+        );
+        setSQDbData(sortedData);
       } catch (error) {
         console.log("Error fetching data:", error);
       }

@@ -18,6 +18,7 @@ const {
   ShowAllServiceQuery,
 } = require("./Db/ServiceQuerySchemaInit");
 const { ContactUsForm } = require("./Db/ContactUsSchemaInit");
+const QueryRanker = require("./QueryRank");
 
 app.use(cors());
 app.use(express.json());
@@ -65,6 +66,7 @@ app.post("/services", async (req, res) => {
     email: req.body.email,
     problem: req.body.problem,
   };
+  let rank = await QueryRanker(req.body.problem);
 
   try {
     await sendFirstEmailServices(emailData);
@@ -76,6 +78,7 @@ app.post("/services", async (req, res) => {
       Apt: req.body.Apt,
       email: req.body.email,
       problem: req.body.problem,
+      queryRank: rank,
     });
 
     res.status(201).json({
@@ -175,66 +178,6 @@ app.get("/admin/markedInfo", async (req, res) => {
     res.status(401).json({ msg: "Unauthorized" });
   }
 });
-
-// const { Configuration, OpenAIApi } = require("openai");
-
-// const API_Key = process.env.OPENAI_API_KEY;
-
-// const config = new Configuration({
-//   apiKey: API_Key,
-// });
-
-// const openai = new OpenAIApi(config);
-
-// async function generateChatCompletion() {
-//   try {
-//     const response = await openai.createChatCompletion({
-//       model: "gpt-3.5-turbo",
-//       prompt: "Hi, how are you today?",
-//       temperature: 1,
-//       max_tokens: 256,
-//       top_p: 1,
-//       frequency_penalty: 0,
-//     });
-
-//     console.log(response.data.choices[0].text);
-//   } catch (error) {
-//     console.error("Error generating chat completion:", error);
-//   }
-// }
-
-// generateChatCompletion();
-const { OpenAI } = require("openai");
-
-const openaiClient = new OpenAI(process.env.OPENAI_API_KEY);
-
-async function rateQuery(query) {
-  try {
-    // Call the correct method for creating chat completions
-    const response = await openaiClient.someMethodForChatCompletion({
-      model: "gpt-3.5-turbo",
-      prompt: query,
-      max_tokens: 1,
-    });
-
-    // Extract rating from the OpenAI response and return it
-    // You may need to customize this based on the response format
-    const rating = parseFloat(response.data.choices[0].text);
-    return rating;
-  } catch (error) {
-    console.error("Error rating query:", error);
-    return null;
-  }
-}
-
-// Usage example
-rateQuery("AC isn't working properly")
-  .then((rating) => {
-    console.log("Rating:", rating);
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}!`);

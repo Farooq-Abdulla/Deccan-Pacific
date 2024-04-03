@@ -4,11 +4,26 @@ import { AdminLoginFormData } from "../store/atom/AdminLoginFormData";
 import { useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function Admin() {
   const navigate = useNavigate();
 
   const [loginData, setLoginData] = useRecoilState(AdminLoginFormData);
+  useAsyncEffect(async()=>{
+    try {
+      const res= await axios.get("http://localhost:8000/admin/info", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      navigate("/admin/info")
+    } catch (error) {
+      navigate('/admin');
+      // console.log("Error fetching data:", error);
+    }
+  },[])
+
   const handleInput = useCallback(
     (e) => {
       setLoginData((prevLoginData) => ({
@@ -26,7 +41,8 @@ export default function Admin() {
           email: loginData.email,
           password: loginData.password,
         });
-        localStorage.setItem("authToken", res.data.token);
+        localStorage.setItem("token", res.data.token);
+        // console.log("In Admin..jsx Page, trying to set token :",res.data.token);
 
         if (res.data.msg === "Success") {
           navigate("/admin/info");

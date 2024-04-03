@@ -7,7 +7,7 @@ export function Header() {
   return (
     <div>
       <div className="navbar">
-        <div className="logo">
+        <div onClick={()=>navigate("/")} className="logo">
           <i>Deccan Pacific</i>
         </div>
         <div className="navbar-Right">

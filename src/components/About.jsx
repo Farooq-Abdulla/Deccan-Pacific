@@ -4,6 +4,7 @@ export default function About() {
     <div>
       <div className="about-section">
         <h2>About Deccan Pacific</h2>
+        
         <p>
           Welcome to Deccan Pacific, where luxury meets community living.
           Nestled in the heart of [City/Region], Deccan Pacific offers an

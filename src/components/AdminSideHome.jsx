@@ -4,31 +4,56 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "../App.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function AdminSideHome() {
   const [SQDbData, setSQDbData] = useRecoilState(SQDbAtom);
   const [fetchTrigger, setFetchTrigger] = useState(false);
   const navigate = useNavigate();
 
+  // useAsyncEffect(async()=>{
+  //   try {
+  //     const res= await axios.get("http://localhost:8000/admin/info", {
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //     },
+  //   });
+    
+  //   // console.log("In Admin Side Home.jsx 2nd useEffect , trying to get token:", localStorage.getItem("token"));
+  //   } catch (error) {
+  //     navigate('/admin');
+  //     // console.log("Error fetching data:", error);
+      
+  //   }
+
+  // },[])
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:8000/admin/info", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
           },
         });
-        const sortedData = response.data.sort(
+        // console.log("In Admin Side Home.jsx 1st useEffect , trying to get token:", localStorage.getItem("token"));
+
+        const sortedData = response.data.info.sort(
           (a, b) => b.queryRank - a.queryRank
         );
         setSQDbData(sortedData);
+        
       } catch (error) {
-        console.log("Error fetching data:", error);
+        navigate('/admin');
+        // console.log("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, [setSQDbData, fetchTrigger]);
+
+  
 
   // console.log(SQDbData);
   const checkBoxHandler = (e, index) => {
@@ -62,6 +87,7 @@ export default function AdminSideHome() {
           },
         }
       );
+      
 
       setSQDbData(res.data);
       setFetchTrigger((prev) => !prev);

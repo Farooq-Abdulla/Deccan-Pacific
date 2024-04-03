@@ -16,12 +16,13 @@ export default function AdminSideMarkedInfo() {
           "http://localhost:8000/admin/markedInfo",
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
         setShowAllDb(response.data);
       } catch (error) {
+        navigate("/admin");
         console.log("Error fetching data:", error);
       }
     };

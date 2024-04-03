@@ -93,20 +93,25 @@ app.post("/services", async (req, res) => {
 
 app.post("/admin", adminLoginMiddleware, function (req, res) {
   const { email, password } = req.body;
-  const token = jwt.sign({ email: email }, AccessTokenSecret);
-  res.setHeader("Authorization", "Bearer " + token);
+  const token = jwt.sign({ email: email }, AccessTokenSecret, {expiresIn: 3600*2});
 
   res.status(200).json({ msg: "Success", token: token });
 });
 
 app.get("/admin/info", async function (req, res) {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) {
-    return res.status(401).json({ msg: "Token is Null" });
-  }
+  
   try {
+    const authHeader = req.headers.authorization;
+  // console.log(authHeader);
+  const token = authHeader && authHeader.split(" ")[1];
+  // console.log(token);
+  if (token == null) {
+    console.log("In checking token is null if loop");
+    return res.status(500).json({ msg: "Token is Null" });
+  }
+    // console.log("After If loop :",token);
     const decoded = jwt.verify(token, AccessTokenSecret);
+    // console.log(decoded);
     const { email } = decoded;
     // console.log(email);
     const validUser = await Login.findOne({ email: email });
@@ -115,10 +120,10 @@ app.get("/admin/info", async function (req, res) {
     }
 
     const info = await ServiceQuery.find();
-    res.status(200).json(info);
+    res.status(200).json({ info: info, user: validUser });
   } catch (error) {
-    console.log("JWT verification error:", error);
-    res.status(401).json({ msg: "Unauthorized" });
+    // console.log("JWT verification error:", error);
+    return res.status(401).json({ msg: "Unauthorized" });
   }
 });
 
@@ -157,12 +162,13 @@ app.post("/admin/info/erase", async (req, res) => {
 });
 
 app.get("/admin/markedInfo", async (req, res) => {
-  const authHeader = req.headers.authorization;
+  
+  try {
+    const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) {
     return res.status(401).json({ msg: "Token is Null" });
   }
-  try {
     const decoded = jwt.verify(token, AccessTokenSecret);
     const { email } = decoded;
     // console.log(email);
@@ -174,8 +180,8 @@ app.get("/admin/markedInfo", async (req, res) => {
     const info = await ShowAllServiceQuery.find();
     res.status(200).json(info);
   } catch (error) {
-    console.log("JWT verification error:", error);
-    res.status(401).json({ msg: "Unauthorized" });
+    // console.log("JWT verification error:", error);
+    return res.status(401).json({ msg: "Unauthorized" });
   }
 });
 

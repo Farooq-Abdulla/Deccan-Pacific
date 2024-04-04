@@ -207,6 +207,9 @@ app.get("/admin/getMarkedInfo", async (req, res) => {
       { email: { $regex: regexFilter } },
       { contactNumber: { $regex: regexFilter } },
       { problem: { $regex: regexFilter } },
+      { date: { $regex: regexFilter } },
+      { address: { $regex: regexFilter } },
+      { Apt: { $regex: regexFilter } },
     ],
   });
   
@@ -253,6 +256,9 @@ app.get("/admin/getInfo",async(req,res)=>{
       { email: { $regex: regexFilter } },
       { contactNumber: { $regex: regexFilter } },
       { problem: { $regex: regexFilter } },
+      { date: { $regex: regexFilter } },
+      { address: { $regex: regexFilter } },
+      { Apt: { $regex: regexFilter } },
     ],
   });
   

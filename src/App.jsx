@@ -2,7 +2,7 @@ import { RecoilRoot } from "recoil";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import React, { Suspense } from "react";
-
+import reactLogo from './assets/react.svg';
 import { Home } from "./components/Home";
 
 const Services = React.lazy(() => import("./components/Services"));
@@ -56,7 +56,7 @@ function App() {
             <Route
               path="/contactUs"
               element={
-                <Suspense fallback={<div>loading...</div>}>
+                <Suspense fallback={<img src={reactLogo} alt='Loading...'/>}>
                   <ContactUs />
                 </Suspense>
               }

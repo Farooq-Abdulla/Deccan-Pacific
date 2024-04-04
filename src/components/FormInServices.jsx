@@ -84,7 +84,7 @@ export function FormInServices() {
           />
           <br />
           <br />
-          <label htmlFor="contactNumber">Contact Number :</label>
+          <label htmlFor="contactNumber">Phone :</label>
           <input
             type="text"
             name="contactNumber"

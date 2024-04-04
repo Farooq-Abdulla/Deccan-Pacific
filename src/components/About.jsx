@@ -3,6 +3,7 @@ export default function About() {
   return (
     <div>
       <div className="about-section">
+      <div className='image'></div>
         <h2>About Deccan Pacific</h2>
         
         <p>

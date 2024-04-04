@@ -2,6 +2,7 @@ import { FormInContactUs } from "./FormInContactUs";
 export default function ContactUs() {
   return (
     <div>
+      <div className='image'></div>
       <p>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Modi et
         asperiores architecto atque dicta, facere nam aut quam, sint maxime odit

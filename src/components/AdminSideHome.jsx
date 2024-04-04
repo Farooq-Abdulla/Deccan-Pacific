@@ -6,11 +6,27 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 
+function useDebounce(searchFilter, dTime){
+  const [value, setValue]=  useState(searchFilter);
+  useEffect(()=>{
+      const handler = setTimeout(()=>{
+          setValue(searchFilter);
+      }, dTime);
+      return ()=>{
+          clearTimeout(handler);
+      }
+  },[dTime, searchFilter]);
+  return value;
+}
 export default function AdminSideHome() {
   const [SQDbData, setSQDbData] = useRecoilState(SQDbAtom);
   const [fetchTrigger, setFetchTrigger] = useState(false);
   const [ searchFilter, setSearchFilter] = useState('');
   const navigate = useNavigate();
+
+  
+
+const debouncedValue= useDebounce(searchFilter,500);
 
   // useAsyncEffect(async()=>{
   //   try {
@@ -56,7 +72,8 @@ export default function AdminSideHome() {
 
   useAsyncEffect(async()=>{
     try {
-      const res= await axios.get("http://localhost:8000/admin/getInfo?filter="+searchFilter,{
+      
+      const res= await axios.get("http://localhost:8000/admin/getInfo?filter="+debouncedValue,{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -69,7 +86,7 @@ export default function AdminSideHome() {
       alert("Some error in Searching Data");
       navigate("/admin/Info");
     }
-  },[searchFilter]);
+  },[debouncedValue]);
 
   // console.log(SQDbData);
   const checkBoxHandler = (e, index) => {

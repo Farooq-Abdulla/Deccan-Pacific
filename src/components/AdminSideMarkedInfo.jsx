@@ -6,11 +6,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import useAsyncEffect from "use-async-effect";
 
+function useDebounce(searchFilter, dTime){
+  const [value, setValue]=  useState(searchFilter);
+  useEffect(()=>{
+      const handler = setTimeout(()=>{
+          setValue(searchFilter);
+      }, dTime);
+      return ()=>{
+          clearTimeout(handler);
+      }
+  },[dTime, searchFilter]);
+  return value;
+}
 export default function AdminSideMarkedInfo() {
   const [showAllDb, setShowAllDb] = useRecoilState(AdminMarkedInfoAtom);
   const [fetchTrigger, setFetchTrigger] = useState(false);
   const [ searchFilter, setSearchFilter] = useState('');
   const navigate = useNavigate();
+  const debouncedValue= useDebounce(searchFilter,500);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +50,7 @@ export default function AdminSideMarkedInfo() {
   }, []);
   useAsyncEffect(async()=>{
     try {
-      const res= await axios.get("http://localhost:8000/admin/getMarkedInfo?filter="+searchFilter,{
+      const res= await axios.get("http://localhost:8000/admin/getMarkedInfo?filter="+debouncedValue,{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -47,7 +60,7 @@ export default function AdminSideMarkedInfo() {
       alert("Some Error in Searching Data");
       navigate("/admin/markedInfo");
     }
-  },[searchFilter]);
+  },[debouncedValue]);
   return (
     <div>
       <h1>Admin Side Home</h1>

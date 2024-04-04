@@ -9,6 +9,7 @@ import useAsyncEffect from "use-async-effect";
 export default function AdminSideHome() {
   const [SQDbData, setSQDbData] = useRecoilState(SQDbAtom);
   const [fetchTrigger, setFetchTrigger] = useState(false);
+  const [ searchFilter, setSearchFilter] = useState('');
   const navigate = useNavigate();
 
   // useAsyncEffect(async()=>{
@@ -53,7 +54,22 @@ export default function AdminSideHome() {
     fetchData();
   }, [setSQDbData, fetchTrigger]);
 
-  
+  useAsyncEffect(async()=>{
+    try {
+      const res= await axios.get("http://localhost:8000/admin/getInfo?filter="+searchFilter,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      const sortedData = res.data.queries.sort(
+        (a, b) => b.queryRank - a.queryRank
+      );
+      setSQDbData(sortedData);
+    } catch (error) {
+      alert("Some error in Searching Data");
+      navigate("/admin/Info");
+    }
+  },[searchFilter]);
 
   // console.log(SQDbData);
   const checkBoxHandler = (e, index) => {
@@ -99,6 +115,10 @@ export default function AdminSideHome() {
   return (
     <div>
       <h1>Admin Side Home</h1>
+      <div className="SearchDiv">
+  <input className="SearchTag" type="text" name="searchTag" placeholder="Search" value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} />
+</div>
+
 
       <div>
         <div className="Table-top">

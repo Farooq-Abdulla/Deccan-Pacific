@@ -4,11 +4,14 @@ import { AdminMarkedInfoAtom } from "../store/atom/AdminMarkedInfoAtom";
 import "../App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import useAsyncEffect from "use-async-effect";
 
 export default function AdminSideMarkedInfo() {
   const [showAllDb, setShowAllDb] = useRecoilState(AdminMarkedInfoAtom);
   const [fetchTrigger, setFetchTrigger] = useState(false);
+  const [ searchFilter, setSearchFilter] = useState('');
   const navigate = useNavigate();
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,12 +35,25 @@ export default function AdminSideMarkedInfo() {
   useEffect(() => {
     setFetchTrigger((prev) => !prev);
   }, []);
+  useAsyncEffect(async()=>{
+    try {
+      const res= await axios.get("http://localhost:8000/admin/getMarkedInfo?filter="+searchFilter,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      setShowAllDb(res.data.queries);
+    } catch (error) {
+      alert("Some Error in Searching Data");
+      navigate("/admin/markedInfo");
+    }
+  },[searchFilter]);
   return (
     <div>
       <h1>Admin Side Home</h1>
 
       <div>
-        <div className="PendingQTable">
+      <div className="PendingQTable">
           <h2
             id="PendingQueries"
             className="allQueries"
@@ -45,6 +61,10 @@ export default function AdminSideMarkedInfo() {
           >
             Go Back to Pending Queries
           </h2>
+
+          <div>
+            <input type="text" name="searchTag" placeholder="Search" value={searchFilter} onChange={(e)=>setSearchFilter(e.target.value)} />
+          </div>
           {/* <p
             className="allQueries"
             onClick={() => navigate("/admin/markedInfo")}

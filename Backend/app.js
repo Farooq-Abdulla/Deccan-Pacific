@@ -185,6 +185,100 @@ app.get("/admin/markedInfo", async (req, res) => {
   }
 });
 
+app.get("/admin/getMarkedInfo", async (req, res) => {
+
+  try {
+    const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) {
+    return res.status(401).json({ msg: "Token is Null" });
+  }
+    const decoded = jwt.verify(token, AccessTokenSecret);
+    const { email } = decoded;
+    const validUser = await Login.findOne({ email: email });
+    if (!validUser) {
+      return res.status(401).json({ msg: "Unauthorized User" });
+    }
+    const filter = req.query.filter || "";
+  const regexFilter = new RegExp(filter, "i"); // "i" flag for case-insensitive matching
+  const filteredQuery = await ShowAllServiceQuery.find({
+    $or: [
+      { name: { $regex: regexFilter } },
+      { email: { $regex: regexFilter } },
+      { contactNumber: { $regex: regexFilter } },
+      { problem: { $regex: regexFilter } },
+    ],
+  });
+  
+  res.json({
+    queries: filteredQuery.map((query) => ({
+      name: query.name,
+      email: query.email,
+      contactNumber: query.contactNumber,
+      problem: query.problem,
+      _id: query._id.toString(),
+      address: query.address,
+      Apt: query.Apt,
+      date: query.date,
+      markAsDone: query.markAsDone
+    })),
+  });
+
+    // const info = await ShowAllServiceQuery.find();
+    // res.status(200).json(info);
+  } catch (error) {
+    // console.log("JWT verification error:", error);
+    return res.status(401).json({ msg: "Unauthorized" });
+  }
+});
+
+app.get("/admin/getInfo",async(req,res)=>{
+  try {
+    const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) {
+    return res.status(401).json({ msg: "Token is Null" });
+  }
+    const decoded = jwt.verify(token, AccessTokenSecret);
+    const { email } = decoded;
+    const validUser = await Login.findOne({ email: email });
+    if (!validUser) {
+      return res.status(401).json({ msg: "Unauthorized User" });
+    }
+    const filter = req.query.filter || "";
+  const regexFilter = new RegExp(filter, "i"); // "i" flag for case-insensitive matching
+  const filteredQuery = await ServiceQuery.find({
+    $or: [
+      { name: { $regex: regexFilter } },
+      { email: { $regex: regexFilter } },
+      { contactNumber: { $regex: regexFilter } },
+      { problem: { $regex: regexFilter } },
+    ],
+  });
+  
+  res.json({
+    queries: filteredQuery.map((query) => ({
+      name: query.name,
+      email: query.email,
+      contactNumber: query.contactNumber,
+      problem: query.problem,
+      _id: query._id.toString(),
+      address: query.address,
+      Apt: query.Apt,
+      date: query.date,
+      queryRank: query.queryRank,
+      markAsDone: query.markAsDone
+    })),
+  });
+
+    // const info = await ShowAllServiceQuery.find();
+    // res.status(200).json(info);
+  } catch (error) {
+    // console.log("JWT verification error:", error);
+    return res.status(401).json({ msg: "Unauthorized" });
+}
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}!`);
 });

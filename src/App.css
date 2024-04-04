@@ -195,7 +195,21 @@ tr:hover {
   background-color: #45a049;
 }
 
-.allQueries {
+.SearchTag{
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+  outline: none;
+  margin-right: 20px
+
+}
+/* .allQueries {
   font-size: 18px;
   font-weight: bold;
   color: #333;
@@ -213,4 +227,47 @@ tr:hover {
 .PendingQTable {
   display: flex;
   justify-content: center;
+} */
+
+.PendingQTable {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.PendingQTable input[type="text"] {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+  outline: none;
+  margin-right: 20px; /* Adjust the margin to add space between the input and other elements */
+}
+
+.PendingQTable input[type="text"]:hover {
+  background-color: #e0e0e0;
+}
+
+.allQueries {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.allQueries:hover {
+  background-color: #dcdcdc;
+}
+
+
+
+

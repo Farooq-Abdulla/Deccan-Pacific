@@ -116,12 +116,10 @@ const debouncedValue= useDebounce(searchFilter,500);
         { checkedItems },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      
-
       setSQDbData(res.data);
       setFetchTrigger((prev) => !prev);
     } catch (error) {

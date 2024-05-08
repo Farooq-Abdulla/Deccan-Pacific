@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 require("dotenv").config();
 const {
   sendFirstEmail,
@@ -92,7 +93,7 @@ app.post("/services", async (req, res) => {
 });
 
 app.post("/admin", adminLoginMiddleware, function (req, res) {
-  const { email, password } = req.body;
+  const { email } = req.body;
   const token = jwt.sign({ email: email }, AccessTokenSecret, {expiresIn: 3600*2});
 
   res.status(200).json({ msg: "Success", token: token });

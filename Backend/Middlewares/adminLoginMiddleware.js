@@ -23,6 +23,4 @@ async function adminLoginMiddleware(req, res, next) {
   }
 }
 
-
-
 module.exports = { adminLoginMiddleware };

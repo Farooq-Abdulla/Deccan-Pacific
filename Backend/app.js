@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 require("dotenv").config();
 const {
   sendFirstEmail,
@@ -94,22 +93,23 @@ app.post("/services", async (req, res) => {
 
 app.post("/admin", adminLoginMiddleware, function (req, res) {
   const { email } = req.body;
-  const token = jwt.sign({ email: email }, AccessTokenSecret, {expiresIn: 3600*2});
+  const token = jwt.sign({ email: email }, AccessTokenSecret, {
+    expiresIn: 3600 * 2,
+  });
 
   res.status(200).json({ msg: "Success", token: token });
 });
 
 app.get("/admin/info", async function (req, res) {
-  
   try {
     const authHeader = req.headers.authorization;
-  // console.log(authHeader);
-  const token = authHeader && authHeader.split(" ")[1];
-  // console.log(token);
-  if (token == null) {
-    console.log("In checking token is null if loop");
-    return res.status(500).json({ msg: "Token is Null" });
-  }
+    // console.log(authHeader);
+    const token = authHeader && authHeader.split(" ")[1];
+    // console.log(token);
+    if (token == null) {
+      console.log("In checking token is null if loop");
+      return res.status(500).json({ msg: "Token is Null" });
+    }
     // console.log("After If loop :",token);
     const decoded = jwt.verify(token, AccessTokenSecret);
     // console.log(decoded);
@@ -163,13 +163,12 @@ app.post("/admin/info/erase", async (req, res) => {
 });
 
 app.get("/admin/markedInfo", async (req, res) => {
-  
   try {
     const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) {
-    return res.status(401).json({ msg: "Token is Null" });
-  }
+    const token = authHeader && authHeader.split(" ")[1];
+    if (token == null) {
+      return res.status(401).json({ msg: "Token is Null" });
+    }
     const decoded = jwt.verify(token, AccessTokenSecret);
     const { email } = decoded;
     // console.log(email);
@@ -187,13 +186,12 @@ app.get("/admin/markedInfo", async (req, res) => {
 });
 
 app.get("/admin/getMarkedInfo", async (req, res) => {
-
   try {
     const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) {
-    return res.status(401).json({ msg: "Token is Null" });
-  }
+    const token = authHeader && authHeader.split(" ")[1];
+    if (token == null) {
+      return res.status(401).json({ msg: "Token is Null" });
+    }
     const decoded = jwt.verify(token, AccessTokenSecret);
     const { email } = decoded;
     const validUser = await Login.findOne({ email: email });
@@ -201,32 +199,32 @@ app.get("/admin/getMarkedInfo", async (req, res) => {
       return res.status(401).json({ msg: "Unauthorized User" });
     }
     const filter = req.query.filter || "";
-  const regexFilter = new RegExp(filter, "i"); // "i" flag for case-insensitive matching
-  const filteredQuery = await ShowAllServiceQuery.find({
-    $or: [
-      { name: { $regex: regexFilter } },
-      { email: { $regex: regexFilter } },
-      { contactNumber: { $regex: regexFilter } },
-      { problem: { $regex: regexFilter } },
-      { date: { $regex: regexFilter } },
-      { address: { $regex: regexFilter } },
-      { Apt: { $regex: regexFilter } },
-    ],
-  });
-  
-  res.json({
-    queries: filteredQuery.map((query) => ({
-      name: query.name,
-      email: query.email,
-      contactNumber: query.contactNumber,
-      problem: query.problem,
-      _id: query._id.toString(),
-      address: query.address,
-      Apt: query.Apt,
-      date: query.date,
-      markAsDone: query.markAsDone
-    })),
-  });
+    const regexFilter = new RegExp(filter, "i"); // "i" flag for case-insensitive matching
+    const filteredQuery = await ShowAllServiceQuery.find({
+      $or: [
+        { name: { $regex: regexFilter } },
+        { email: { $regex: regexFilter } },
+        { contactNumber: { $regex: regexFilter } },
+        { problem: { $regex: regexFilter } },
+        { date: { $regex: regexFilter } },
+        { address: { $regex: regexFilter } },
+        { Apt: { $regex: regexFilter } },
+      ],
+    });
+
+    res.json({
+      queries: filteredQuery.map((query) => ({
+        name: query.name,
+        email: query.email,
+        contactNumber: query.contactNumber,
+        problem: query.problem,
+        _id: query._id.toString(),
+        address: query.address,
+        Apt: query.Apt,
+        date: query.date,
+        markAsDone: query.markAsDone,
+      })),
+    });
 
     // const info = await ShowAllServiceQuery.find();
     // res.status(200).json(info);
@@ -236,13 +234,13 @@ app.get("/admin/getMarkedInfo", async (req, res) => {
   }
 });
 
-app.get("/admin/getInfo",async(req,res)=>{
+app.get("/admin/getInfo", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) {
-    return res.status(401).json({ msg: "Token is Null" });
-  }
+    const token = authHeader && authHeader.split(" ")[1];
+    if (token == null) {
+      return res.status(401).json({ msg: "Token is Null" });
+    }
     const decoded = jwt.verify(token, AccessTokenSecret);
     const { email } = decoded;
     const validUser = await Login.findOne({ email: email });
@@ -250,40 +248,40 @@ app.get("/admin/getInfo",async(req,res)=>{
       return res.status(401).json({ msg: "Unauthorized User" });
     }
     const filter = req.query.filter || "";
-  const regexFilter = new RegExp(filter, "i"); // "i" flag for case-insensitive matching
-  const filteredQuery = await ServiceQuery.find({
-    $or: [
-      { name: { $regex: regexFilter } },
-      { email: { $regex: regexFilter } },
-      { contactNumber: { $regex: regexFilter } },
-      { problem: { $regex: regexFilter } },
-      { date: { $regex: regexFilter } },
-      { address: { $regex: regexFilter } },
-      { Apt: { $regex: regexFilter } },
-    ],
-  });
-  
-  res.json({
-    queries: filteredQuery.map((query) => ({
-      name: query.name,
-      email: query.email,
-      contactNumber: query.contactNumber,
-      problem: query.problem,
-      _id: query._id.toString(),
-      address: query.address,
-      Apt: query.Apt,
-      date: query.date,
-      queryRank: query.queryRank,
-      markAsDone: query.markAsDone
-    })),
-  });
+    const regexFilter = new RegExp(filter, "i"); // "i" flag for case-insensitive matching
+    const filteredQuery = await ServiceQuery.find({
+      $or: [
+        { name: { $regex: regexFilter } },
+        { email: { $regex: regexFilter } },
+        { contactNumber: { $regex: regexFilter } },
+        { problem: { $regex: regexFilter } },
+        { date: { $regex: regexFilter } },
+        { address: { $regex: regexFilter } },
+        { Apt: { $regex: regexFilter } },
+      ],
+    });
+
+    res.json({
+      queries: filteredQuery.map((query) => ({
+        name: query.name,
+        email: query.email,
+        contactNumber: query.contactNumber,
+        problem: query.problem,
+        _id: query._id.toString(),
+        address: query.address,
+        Apt: query.Apt,
+        date: query.date,
+        queryRank: query.queryRank,
+        markAsDone: query.markAsDone,
+      })),
+    });
 
     // const info = await ShowAllServiceQuery.find();
     // res.status(200).json(info);
   } catch (error) {
     // console.log("JWT verification error:", error);
     return res.status(401).json({ msg: "Unauthorized" });
-}
+  }
 });
 
 app.listen(port, () => {

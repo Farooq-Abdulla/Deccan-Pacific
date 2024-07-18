@@ -1,5 +1,6 @@
+require("dotenv").config();
 const nodemailer = require("nodemailer");
-const sendFirstEmail = (emailData, callback) => {
+const sendFirstEmail = (emailData) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -31,7 +32,7 @@ const sendFirstEmail = (emailData, callback) => {
 };
 
 // Function to send the second email
-const sendSecondEmail = (emailData, callback) => {
+const sendSecondEmail = (emailData) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -60,7 +61,7 @@ const sendSecondEmail = (emailData, callback) => {
   });
 };
 
-const sendFirstEmailServices = (emailData, callback) => {
+const sendFirstEmailServices = (emailData) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -91,7 +92,7 @@ const sendFirstEmailServices = (emailData, callback) => {
   });
 };
 
-const sendSecondEmailServices = (emailData, callback) => {
+const sendSecondEmailServices = (emailData) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,

@@ -1,12 +1,12 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODBCONNECTION);
-const options = {
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-  hour12: true, // Use 12-hour clock
-};
+// const options = {
+//   hour: "numeric",
+//   minute: "numeric",
+//   second: "numeric",
+//   hour12: true, // Use 12-hour clock
+// };
 
 const serviceQuerySchema = new mongoose.Schema({
   name: {

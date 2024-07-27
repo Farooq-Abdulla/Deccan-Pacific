@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  frontendnew:
+    build: .
+    ports:
+      - 5173:5173
+    # networks:
+    #   - front_back_nw
+    volumes:
+      - ./src:/app/src
+  backendnew:
+    build:
+      dockerfile: backend.Dockerfile
+    ports:
+      - 8000:8000
+    # networks:
+    #   - front_back_nw
+    # volumes:
+    #   - ./Backend:/app
+    env_file:
+      - ./Backend/.env
+# networks:
+#   front_back_nw:
+#     driver: bridge

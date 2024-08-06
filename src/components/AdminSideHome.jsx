@@ -1,32 +1,32 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { SQDbAtom } from "../store/atom/SQDbAtom";
-import { useCallback, useEffect, useRef, useState } from "react";
-import "../App.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import useAsyncEffect from "use-async-effect";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import useAsyncEffect from 'use-async-effect';
+import '../App.css';
+import { SQDbAtom } from '../store/atom/SQDbAtom';
+import { config } from './configUrl';
+const URL = config.url;
 
-function useDebounce(searchFilter, dTime){
-  const [value, setValue]=  useState(searchFilter);
-  useEffect(()=>{
-      const handler = setTimeout(()=>{
-          setValue(searchFilter);
-      }, dTime);
-      return ()=>{
-          clearTimeout(handler);
-      }
-  },[dTime, searchFilter]);
+function useDebounce(searchFilter, dTime) {
+  const [value, setValue] = useState(searchFilter);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setValue(searchFilter);
+    }, dTime);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [dTime, searchFilter]);
   return value;
 }
 export default function AdminSideHome() {
   const [SQDbData, setSQDbData] = useRecoilState(SQDbAtom);
   const [fetchTrigger, setFetchTrigger] = useState(false);
-  const [ searchFilter, setSearchFilter] = useState('');
+  const [searchFilter, setSearchFilter] = useState('');
   const navigate = useNavigate();
 
-  
-
-const debouncedValue= useDebounce(searchFilter,500);
+  const debouncedValue = useDebounce(searchFilter, 500);
 
   // useAsyncEffect(async()=>{
   //   try {
@@ -35,23 +35,23 @@ const debouncedValue= useDebounce(searchFilter,500);
   //       Authorization: `Bearer ${localStorage.getItem("token")}`,
   //     },
   //   });
-    
+
   //   // console.log("In Admin Side Home.jsx 2nd useEffect , trying to get token:", localStorage.getItem("token"));
   //   } catch (error) {
   //     navigate('/admin');
   //     // console.log("Error fetching data:", error);
-      
+
   //   }
 
   // },[])
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/admin/info", {
+        const response = await axios.get(`${URL}/admin/info`, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-            "Content-Type": "application/json",
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json',
           },
         });
         // console.log("In Admin Side Home.jsx 1st useEffect , trying to get token:", localStorage.getItem("token"));
@@ -60,7 +60,6 @@ const debouncedValue= useDebounce(searchFilter,500);
           (a, b) => b.queryRank - a.queryRank
         );
         setSQDbData(sortedData);
-        
       } catch (error) {
         navigate('/admin');
         // console.log("Error fetching data:", error);
@@ -70,23 +69,25 @@ const debouncedValue= useDebounce(searchFilter,500);
     fetchData();
   }, [setSQDbData, fetchTrigger]);
 
-  useAsyncEffect(async()=>{
+  useAsyncEffect(async () => {
     try {
-      
-      const res= await axios.get("http://localhost:8000/admin/getInfo?filter="+debouncedValue,{
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      const res = await axios.get(
+        `${URL}/admin/getInfo?filter=` + debouncedValue,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
       const sortedData = res.data.queries.sort(
         (a, b) => b.queryRank - a.queryRank
       );
       setSQDbData(sortedData);
     } catch (error) {
-      alert("Some error in Searching Data");
-      navigate("/admin/Info");
+      alert('Some error in Searching Data');
+      navigate('/admin/Info');
     }
-  },[debouncedValue]);
+  }, [debouncedValue]);
 
   // console.log(SQDbData);
   const checkBoxHandler = (e, index) => {
@@ -112,18 +113,18 @@ const debouncedValue= useDebounce(searchFilter,500);
     try {
       const checkedItems = SQDbData.filter((item) => item.markAsDone);
       const res = await axios.post(
-        "http://localhost:8000/admin/info/erase",
+        `${URL}/admin/info/erase`,
         { checkedItems },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
       setSQDbData(res.data);
       setFetchTrigger((prev) => !prev);
     } catch (error) {
-      console.log("Error submitting form:", error);
+      console.log('Error submitting form:', error);
     }
   };
 
@@ -131,16 +132,22 @@ const debouncedValue= useDebounce(searchFilter,500);
     <div>
       <h1>Admin Side Home</h1>
       <div className="SearchDiv">
-  <input className="SearchTag" type="text" name="searchTag" placeholder="Search" value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} />
-</div>
-
+        <input
+          className="SearchTag"
+          type="text"
+          name="searchTag"
+          placeholder="Search"
+          value={searchFilter}
+          onChange={(e) => setSearchFilter(e.target.value)}
+        />
+      </div>
 
       <div>
         <div className="Table-top">
           <h2>Pending Queries</h2>
           <p
             className="allQueries"
-            onClick={() => navigate("/admin/markedInfo")}
+            onClick={() => navigate('/admin/markedInfo')}
           >
             Show All Queries
           </p>

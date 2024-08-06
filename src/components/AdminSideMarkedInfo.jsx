@@ -1,45 +1,44 @@
-import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { AdminMarkedInfoAtom } from "../store/atom/AdminMarkedInfoAtom";
-import "../App.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import useAsyncEffect from "use-async-effect";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import useAsyncEffect from 'use-async-effect';
+import '../App.css';
+import { AdminMarkedInfoAtom } from '../store/atom/AdminMarkedInfoAtom';
+import { config } from './configUrl';
+const URL = config.url;
 
-function useDebounce(searchFilter, dTime){
-  const [value, setValue]=  useState(searchFilter);
-  useEffect(()=>{
-      const handler = setTimeout(()=>{
-          setValue(searchFilter);
-      }, dTime);
-      return ()=>{
-          clearTimeout(handler);
-      }
-  },[dTime, searchFilter]);
+function useDebounce(searchFilter, dTime) {
+  const [value, setValue] = useState(searchFilter);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setValue(searchFilter);
+    }, dTime);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [dTime, searchFilter]);
   return value;
 }
 export default function AdminSideMarkedInfo() {
   const [showAllDb, setShowAllDb] = useRecoilState(AdminMarkedInfoAtom);
   const [fetchTrigger, setFetchTrigger] = useState(false);
-  const [ searchFilter, setSearchFilter] = useState('');
+  const [searchFilter, setSearchFilter] = useState('');
   const navigate = useNavigate();
-  const debouncedValue= useDebounce(searchFilter,500);
-  
+  const debouncedValue = useDebounce(searchFilter, 500);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/admin/markedInfo",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get(`${URL}/admin/markedInfo`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
         setShowAllDb(response.data);
       } catch (error) {
-        navigate("/admin");
-        console.log("Error fetching data:", error);
+        navigate('/admin');
+        console.log('Error fetching data:', error);
       }
     };
 
@@ -48,35 +47,44 @@ export default function AdminSideMarkedInfo() {
   useEffect(() => {
     setFetchTrigger((prev) => !prev);
   }, []);
-  useAsyncEffect(async()=>{
+  useAsyncEffect(async () => {
     try {
-      const res= await axios.get("http://localhost:8000/admin/getMarkedInfo?filter="+debouncedValue,{
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      const res = await axios.get(
+        `${URL}/admin/getMarkedInfo?filter=` + debouncedValue,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
       setShowAllDb(res.data.queries);
     } catch (error) {
-      alert("Some Error in Searching Data");
-      navigate("/admin/markedInfo");
+      alert('Some Error in Searching Data');
+      navigate('/admin/markedInfo');
     }
-  },[debouncedValue]);
+  }, [debouncedValue]);
   return (
     <div>
       <h1>Admin Side Home</h1>
 
       <div>
-      <div className="PendingQTable">
+        <div className="PendingQTable">
           <h2
             id="PendingQueries"
             className="allQueries"
-            onClick={() => navigate("/admin/info")}
+            onClick={() => navigate('/admin/info')}
           >
             Go Back to Pending Queries
           </h2>
 
           <div>
-            <input type="text" name="searchTag" placeholder="Search" value={searchFilter} onChange={(e)=>setSearchFilter(e.target.value)} />
+            <input
+              type="text"
+              name="searchTag"
+              placeholder="Search"
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
+            />
           </div>
           {/* <p
             className="allQueries"

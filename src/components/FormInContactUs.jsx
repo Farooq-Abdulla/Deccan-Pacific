@@ -1,8 +1,10 @@
-import { useRecoilState } from "recoil";
-import { ContactUsFormData } from "../store/ContactUsFormData";
-import "../App.css";
-import axios from "axios";
-import { useCallback } from "react";
+import axios from 'axios';
+import { useCallback } from 'react';
+import { useRecoilState } from 'recoil';
+import '../App.css';
+import { ContactUsFormData } from '../store/ContactUsFormData';
+import { config } from './configUrl';
+const URL = config.url;
 
 export function FormInContactUs() {
   const [ContactUsForm, setContactUsFrom] = useRecoilState(ContactUsFormData);
@@ -21,21 +23,21 @@ export function FormInContactUs() {
     async (e) => {
       e.preventDefault();
       try {
-        await axios.post("http://localhost:8000/contactUs", {
+        await axios.post(`${URL}/contactUs`, {
           name: ContactUsForm.name,
           email: ContactUsForm.email,
           subject: ContactUsForm.subject,
           description: ContactUsForm.description,
         });
-        alert("Email sent successfully");
+        alert('Email sent successfully');
         setContactUsFrom({
-          name: "",
-          email: "",
-          subject: "",
-          description: "",
+          name: '',
+          email: '',
+          subject: '',
+          description: '',
         });
       } catch (error) {
-        console.log("Error submitting form:", error);
+        console.log('Error submitting form:', error);
       }
     },
     [ContactUsForm]

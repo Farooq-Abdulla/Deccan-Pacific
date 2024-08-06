@@ -1,8 +1,10 @@
-import { useRecoilState } from "recoil";
-import { FormData } from "../store/atom/ServicesFormData";
-import "../App.css";
-import axios from "axios";
-import { useCallback } from "react";
+import axios from 'axios';
+import { useCallback } from 'react';
+import { useRecoilState } from 'recoil';
+import '../App.css';
+import { FormData } from '../store/atom/ServicesFormData';
+import { config } from './configUrl';
+const URL = config.url;
 export function FormInServices() {
   const [formData, setFormData] = useRecoilState(FormData);
   const handleInput = useCallback(
@@ -18,7 +20,7 @@ export function FormInServices() {
     async (e) => {
       e.preventDefault();
       try {
-        await axios.post("http://localhost:8000/services", {
+        await axios.post(`${URL}/services`, {
           name: formData.name,
           address: formData.address,
           contactNumber: formData.contactNumber,
@@ -26,17 +28,17 @@ export function FormInServices() {
           email: formData.email,
           problem: formData.problem,
         });
-        alert("Email sent successfully");
+        alert('Email sent successfully');
         setFormData({
-          name: "",
-          address: "",
-          contactNumber: "",
-          Apt: "",
-          email: "",
-          problem: "",
+          name: '',
+          address: '',
+          contactNumber: '',
+          Apt: '',
+          email: '',
+          problem: '',
         });
       } catch (error) {
-        console.log("Error submitting form:", error);
+        console.log('Error submitting form:', error);
       }
     },
     [formData]

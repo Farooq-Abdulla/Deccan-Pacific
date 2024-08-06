@@ -25,7 +25,7 @@ export default function About() {
           <h3>Our Mission</h3>
           <p>
             Our mission is to provide high-quality, sustainable homes that
-            exceed our residents' expectations. We are committed to delivering
+            exceed our residents expectations. We are committed to delivering
             exceptional service, fostering a sense of community, and enhancing
             the quality of life for all our residents.
           </p>

@@ -14,7 +14,7 @@ export default function Admin() {
   const [loginData, setLoginData] = useRecoilState(AdminLoginFormData);
   useAsyncEffect(async () => {
     try {
-      const res = await axios.get(`${URL}/admin/info`, {
+      await axios.get(`${URL}/admin/info`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

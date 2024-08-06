@@ -1,8 +1,7 @@
-import axios from "axios";
-import { atom, selector } from "recoil";
+import { atom } from 'recoil';
 
 export const AdminMarkedInfoAtom = atom({
-  key: "AdminMarkedInfoAtom",
+  key: 'AdminMarkedInfoAtom',
   // default: selector({
   //   key: "AdminMarkedInfoAtomSelector",
   //   get: async () => {

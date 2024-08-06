@@ -1,8 +1,7 @@
-import axios from "axios";
-import { atom, selector } from "recoil";
+import { atom } from 'recoil';
 
 export const SQDbAtom = atom({
-  key: "SQDbAtom",
+  key: 'SQDbAtom',
   // default: selector({
   //   key: "SQDbAtomSelector",
   //   get: async () => {

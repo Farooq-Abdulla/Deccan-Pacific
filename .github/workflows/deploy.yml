@@ -1,0 +1,35 @@
+name: Build and Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Continuous-Deployment:
+    name: building and deploying on EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run : npm install
+
+      - name: Run Build
+        run : npm run build
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@main
+        with: 
+          key: ${{ secrets.SSH_KEY }}
+          username: ${{ secrets.SSH_USERNAME }}
+          host: ${{ secrets.SSH_HOST }}
+          script: |
+            cd Deccan-Pacific
+            docker-compose down --rmi all
+            git pull
+            npm install
+            docker-compose up -d
+            

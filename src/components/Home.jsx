@@ -30,7 +30,7 @@ export function Home() {
       <section>
         <h2>Contact Us</h2>
         <p>Phone: 123-456-7890</p>
-        <p>Email: info@leasingoffice.com</p>
+        <p>Email: DeccanPacific@leasingoffice.com</p>
         <p>Address: 123 Main Street, City, Country</p>
       </section>
       <footer>

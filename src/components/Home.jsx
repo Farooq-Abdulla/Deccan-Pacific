@@ -23,7 +23,7 @@ export function Home() {
         <ul>
           <li>Modern and Spacious Apartments</li>
           <li>24/7 Security and Maintenance</li>
-          <li>Community Amenities (Pool, Gym, etc.)</li>
+          <li>Community Amenities (Pool, Gym, Study Halls etc.)</li>
           <li>Convenient Location Near Shops and Restaurants</li>
         </ul>
       </section>

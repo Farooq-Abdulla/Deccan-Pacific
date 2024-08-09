@@ -31,7 +31,7 @@ export function Home() {
         <h2>Contact Us</h2>
         <p>Phone: 123-456-7890</p>
         <p>Email: DeccanPacific@leasingoffice.com</p>
-        <p>Address: 123 Main Street, City, Country</p>
+        <p>Address: 1234 Main Street, City, Country</p>
       </section>
       <footer>
         <p>&copy; 2024 Leasing Office. All rights reserved.</p>

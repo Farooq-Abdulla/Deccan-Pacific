@@ -29,7 +29,7 @@ jobs:
           script: |
             cd Deccan-Pacific
             docker-compose down --rmi all
-            git pull
+            git pull origin main
             npm install
             docker-compose up -d
             

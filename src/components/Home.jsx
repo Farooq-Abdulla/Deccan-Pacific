@@ -14,7 +14,7 @@ export function Home() {
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
           malesuada ex in ante vestibulum, nec condimentum libero
-          condimentum. Sed ultricies velit et purus fringilla tempus.
+          condimentum. Sed ultricies velit et purus fringilla tempus dolor.
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias odit, nisi quaerat rem corrupti at soluta quasi libero quia modi quam atque obcaecati laborum, beatae, optio eos est nostrum repellat.
         </p>
       </section>
